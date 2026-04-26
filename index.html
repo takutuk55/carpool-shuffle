@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>🚗 ワクワク乗り合いシャッフル！</title>
     <!-- Google Fonts: Nunito & Zen Maru Gothic -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -38,14 +38,14 @@
             color: var(--text-main);
             line-height: 1.6;
             min-height: 100vh;
-            padding: 20px;
+            padding: 20px 15px; /* スマホ用に左右余白を少し縮小 */
             display: flex;
             flex-direction: column;
             align-items: center;
-            overflow-x: hidden;
+            overflow-x: hidden; /* 横スクロールを完全に禁止 */
         }
 
-        /* --- 雲が流れる背景 --- */
+        /* --- 雲の背景 --- */
         .cloud-bg {
             position: fixed;
             top: 0;
@@ -54,6 +54,7 @@
             height: 100%;
             z-index: -1;
             pointer-events: none;
+            overflow: hidden;
         }
 
         .cloud {
@@ -89,88 +90,299 @@
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             border-radius: var(--radius-main);
-            padding: 40px 30px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.08);
-            border: 1px solid rgba(255,255,255,0.8);
+            padding: 40px 25px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.06);
+            border: 1px solid rgba(255,255,255,0.7);
             margin-top: 20px;
             position: relative;
             z-index: 10;
         }
 
-        header { text-align: center; margin-bottom: 40px; }
-        h1 {
-            font-weight: 900; font-size: 2.4rem; color: var(--accent-pink);
-            letter-spacing: -0.5px; margin-bottom: 8px;
-            text-shadow: 2px 2px 0 rgba(255,255,255,0.8);
+        header {
+            text-align: center;
+            margin-bottom: 35px;
         }
-        .subtitle { font-size: 1rem; color: #7AA8DB; font-weight: 900; }
+
+        h1 {
+            font-weight: 900;
+            font-size: 2.2rem;
+            color: var(--accent-pink);
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
+            text-shadow: 2px 2px 0 rgba(255,255,255,0.8);
+            word-break: keep-all; /* モバイルでの不自然な改行を防止 */
+        }
+
+        .subtitle {
+            font-size: 0.95rem;
+            color: #7AA8DB;
+            font-weight: 900;
+        }
 
         section {
-            background: var(--card-bg); border: 2px solid var(--border-light);
-            border-radius: var(--radius-main); padding: 28px; margin-bottom: 30px;
+            background: var(--card-bg);
+            border: 2px solid var(--border-light);
+            border-radius: var(--radius-main);
+            padding: 24px;
+            margin-bottom: 25px;
             box-shadow: var(--shadow);
         }
-        h2 { font-size: 1.3rem; margin-bottom: 24px; display: flex; align-items: center; gap: 12px; color: #5D95D1; }
 
-        .member-list { display: flex; flex-direction: column; gap: 14px; }
-        .member-item { display: flex; gap: 12px; animation: slideIn 0.35s ease-out; }
-        @keyframes slideIn { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
+        h2 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #5D95D1;
+        }
 
-        input { padding: 14px 22px; border: 2.5px solid #F0F7FF; border-radius: var(--radius-input); font-size: 1rem; outline: none; transition: 0.25s; font-family: inherit; color: var(--text-main); }
-        input[type="text"] { flex: 1; background: #FAFDFF; }
-        input:focus { border-color: var(--sky-blue); background: #FFF; box-shadow: 0 0 0 5px rgba(161, 196, 253, 0.15); }
+        .member-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
 
-        .btn-remove { background: #FFF; border: 2px solid #EEE; color: #DDD; width: 48px; height: 48px; border-radius: var(--radius-input); cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; }
-        .btn-remove:hover { background: #FFF0F0; border-color: #FFDADA; color: var(--accent-pink); transform: scale(1.1); }
-        .btn-add { margin-top: 20px; background: white; border: 3px dashed #A1C4FD; color: #A1C4FD; padding: 14px; border-radius: var(--radius-input); cursor: pointer; width: 100%; font-weight: 900; transition: 0.2s; }
-        .btn-add:hover { border-color: var(--accent-pink); background: rgba(255, 143, 171, 0.05); }
+        .member-item {
+            display: flex;
+            gap: 10px;
+        }
 
-        .car-count-ctrl { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; background: #F0F7FF; padding: 20px 24px; border-radius: 20px; }
-        .num-stepper { display: flex; align-items: center; background: white; border-radius: 12px; border: 2px solid #E0EFFF; }
-        .num-stepper button { background: none; border: none; padding: 10px 20px; font-size: 1.4rem; cursor: pointer; color: #A1C4FD; font-weight: 900; }
-        .num-stepper input { width: 60px; border: none; text-align: center; font-size: 1.3rem; font-weight: 900; outline: none; }
+        input {
+            padding: 12px 18px;
+            border: 2.5px solid #F0F7FF;
+            border-radius: var(--radius-input);
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.2s;
+            font-family: inherit;
+            color: var(--text-main);
+            width: 100%; /* 全てのインプットをデフォルトで幅いっぱいに */
+        }
 
-        .car-names-grid { display: flex; flex-direction: column; gap: 12px; }
-        .car-setting-row { display: flex; gap: 12px; align-items: center; background: #FFF; padding: 10px; border-radius: 18px; border: 2px solid #F0F7FF; }
-        .capacity-box { display: flex; align-items: center; gap: 8px; background: #F0F7FF; padding: 6px 12px; border-radius: 12px; font-weight: 700; color: #5D95D1; font-size: 0.9rem; }
+        input[type="text"] {
+            flex: 1;
+            background: #FAFDFF;
+        }
 
-        .action-area { text-align: center; margin: 50px 0; }
-        .btn-shuffle { background: var(--accent-pink); color: white; border: none; padding: 22px 70px; font-size: 1.6rem; font-weight: 900; border-radius: var(--radius-btn); cursor: pointer; box-shadow: var(--shadow-btn); transition: 0.25s; }
-        .btn-shuffle:hover { transform: translateY(-4px); background: var(--accent-pink-hover); }
-        .btn-shuffle:active { transform: translateY(2px); box-shadow: none; }
+        input:focus {
+            border-color: var(--sky-blue);
+            background: #FFF;
+            box-shadow: 0 0 0 4px rgba(161, 196, 253, 0.12);
+        }
 
-        #results-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px; width: 100%; }
-        .result-card { background: white; border-radius: 24px; padding: 28px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 2px solid #F0F7FF; animation: popIn 0.5s ease-out forwards; }
-        @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-        .member-tag { display: inline-block; background: #F3F9FF; color: #5D95D1; padding: 8px 18px; border-radius: 50px; font-weight: 900; margin: 4px; border: 1.5px solid #E0EFFF; }
+        .btn-remove {
+            background: #FFF;
+            border: 2px solid #EEE;
+            color: #DDD;
+            width: 48px;
+            min-width: 48px; /* スマホで潰れないように固定 */
+            height: 48px;
+            border-radius: var(--radius-input);
+            cursor: pointer;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+        }
 
-        .empty-state { grid-column: 1 / -1; text-align: center; color: #ABC; padding: 60px; font-weight: 900; border: 3px dashed #CFE5FF; border-radius: 25px; }
+        .btn-remove:hover {
+            background: #FFF0F0;
+            border-color: #FFDADA;
+            color: var(--accent-pink);
+        }
 
+        .btn-add {
+            margin-top: 15px;
+            background: white;
+            border: 3px dashed #A1C4FD;
+            color: #A1C4FD;
+            padding: 14px;
+            border-radius: var(--radius-input);
+            cursor: pointer;
+            width: 100%;
+            font-weight: 900;
+            transition: 0.2s;
+        }
+
+        .car-count-ctrl {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            background: #F0F7FF;
+            padding: 15px 20px;
+            border-radius: 20px;
+            flex-wrap: wrap; /* スマホで入り切らない場合を考慮 */
+            gap: 10px;
+        }
+
+        .num-stepper {
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 12px;
+            border: 2px solid #E0EFFF;
+        }
+
+        .num-stepper button {
+            background: none;
+            border: none;
+            padding: 8px 18px;
+            font-size: 1.3rem;
+            cursor: pointer;
+            color: #A1C4FD;
+            font-weight: 900;
+        }
+
+        .num-stepper input {
+            width: 50px;
+            border: none;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 900;
+            background: transparent;
+        }
+
+        .car-names-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .car-setting-row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            background: #FFF;
+            padding: 10px;
+            border-radius: 18px;
+            border: 2px solid #F0F7FF;
+        }
+
+        .capacity-box {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: #F0F7FF;
+            padding: 6px 10px;
+            border-radius: 12px;
+            font-weight: 700;
+            color: #5D95D1;
+            font-size: 0.85rem;
+            white-space: nowrap;
+        }
+
+        .car-capacity-input {
+            width: 50px !important;
+            padding: 6px !important;
+            text-align: center;
+            font-weight: 900;
+            border-width: 2px;
+        }
+
+        .action-area {
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .btn-shuffle {
+            background: var(--accent-pink);
+            color: white;
+            border: none;
+            padding: 20px 60px;
+            font-size: 1.5rem;
+            font-weight: 900;
+            border-radius: var(--radius-btn);
+            cursor: pointer;
+            box-shadow: var(--shadow-btn);
+            transition: all 0.2s;
+            width: 100%; /* スマホなら幅いっぱいに */
+            max-width: 400px;
+        }
+
+        .btn-shuffle:active {
+            transform: translateY(2px);
+            box-shadow: none;
+        }
+
+        #results-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            width: 100%;
+        }
+
+        .result-card {
+            background: white;
+            border-radius: 24px;
+            padding: 22px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border: 2px solid #F0F7FF;
+            animation: popIn 0.5s ease-out;
+        }
+
+        @keyframes popIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+        .member-tag {
+            display: inline-block;
+            background: #F3F9FF;
+            color: #5D95D1;
+            padding: 7px 16px;
+            border-radius: 50px;
+            font-weight: 900;
+            margin: 4px;
+            border: 1.5px solid #E0EFFF;
+            font-size: 0.9rem;
+            word-break: break-all; /* 長い名前のはみ出し防止 */
+        }
+
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            color: #ABC;
+            padding: 50px 20px;
+            font-weight: 900;
+            border: 3px dashed #CFE5FF;
+            border-radius: 25px;
+            font-size: 0.9rem;
+        }
+
+        /* --- モバイル専用の詳細調整 --- */
         @media (max-width: 600px) {
-            h1 { font-size: 1.8rem; }
-            .container { padding: 20px 15px; }
-            .btn-shuffle { width: 100%; padding: 18px; font-size: 1.3rem; }
+            h1 { font-size: 1.6rem; }
+            .container { padding: 30px 18px; border-radius: 24px; }
+            section { padding: 18px; border-radius: 22px; }
+            h2 { font-size: 1.1rem; }
+            .car-setting-row {
+                flex-direction: column;
+                align-items: stretch;
+                padding: 12px;
+            }
+            .capacity-box {
+                align-self: flex-end; /* 定員入力は右寄せで収まりを良くする */
+            }
+            .btn-shuffle {
+                padding: 16px;
+                font-size: 1.3rem;
+            }
         }
     </style>
 </head>
 <body>
 
     <div class="cloud-bg">
-        <!-- 雲だけを残します -->
         <div class="cloud" style="top: 5%; left: 0%; animation-duration: 35s;"></div>
-        <div class="cloud" style="top: 15%; left: 0%; animation-duration: 25s; transform: scale(1.5); opacity: 0.4;"></div>
         <div class="cloud" style="top: 25%; left: 0%; animation-duration: 45s; transform: scale(0.8); opacity: 0.8;"></div>
-        <div class="cloud" style="top: 35%; left: 0%; animation-duration: 30s; transform: scale(1.2); opacity: 0.6;"></div>
-        <div class="cloud" style="top: 50%; left: 0%; animation-duration: 40s;"></div>
-        <div class="cloud" style="top: 60%; left: 0%; animation-duration: 28s; transform: scale(1.7); opacity: 0.3;"></div>
+        <div class="cloud" style="top: 45%; left: 0%; animation-duration: 30s; transform: scale(1.2); opacity: 0.6;"></div>
         <div class="cloud" style="top: 70%; left: 0%; animation-duration: 50s; transform: scale(0.7); opacity: 0.9;"></div>
-        <div class="cloud" style="top: 85%; left: 0%; animation-duration: 32s; transform: scale(1.3); opacity: 0.5;"></div>
     </div>
 
     <div class="container">
         <header>
             <h1>🚗 ワクワク乗り合いシャッフル！</h1>
-            <div class="subtitle">✨ 青空の下で楽しくシャッフルしよう ✨</div>
+            <div class="subtitle">✨ みんなでお出かけ・ワクワク気分 ✨</div>
         </header>
 
         <section>
@@ -184,9 +396,9 @@
             <div class="car-count-ctrl">
                 <span>今の車の台数：</span>
                 <div class="num-stepper">
-                    <button onclick="changeCarCount(-1)">-</button>
+                    <button onclick="updateCars(-1)">-</button>
                     <input type="number" id="car-count" value="2" readonly>
-                    <button onclick="changeCarCount(1)">+</button>
+                    <button onclick="updateCars(1)">+</button>
                 </div>
             </div>
             <div id="car-names-container" class="car-names-grid"></div>
@@ -204,11 +416,11 @@
     <script>
         let memberId = 0;
         let carCount = 2;
-        const examples = ["田中さん", "佐藤さん", "鈴木さん", "高橋さん", "伊藤さん", "中村さん", "小林さん"];
+        const examples = ["田中さん", "佐藤さん", "鈴木さん", "高橋さん", "中村さん", "山本さん"];
 
         window.addEventListener('DOMContentLoaded', () => {
             for(let i=0; i<4; i++) addMember();
-            updateCarNames();
+            renderCars();
         });
 
         function addMember() {
@@ -220,19 +432,19 @@
             document.getElementById('member-inputs').appendChild(div);
         }
 
-        function changeCarCount(v) {
+        function updateCars(v) {
             const n = carCount + v;
             if(n >= 1 && n <= 10) {
                 carCount = n;
                 document.getElementById('car-count').value = carCount;
-                updateCarNames();
+                renderCars();
             }
         }
 
-        function updateCarNames() {
+        function renderCars() {
             const container = document.getElementById('car-names-container');
-            const currentInputs = Array.from(container.querySelectorAll('.car-setting-row'));
-            const saved = currentInputs.map(r => ({
+            const current = Array.from(container.querySelectorAll('.car-setting-row'));
+            const saved = current.map(r => ({
                 name: r.querySelector('.car-name').value,
                 cap: r.querySelector('.car-cap').value
             }));
@@ -242,7 +454,7 @@
                 const div = document.createElement('div');
                 div.className = 'car-setting-row';
                 div.innerHTML = `
-                    <input type="text" class="car-name-input car-name" value="${data.name}" placeholder="${i}号車">
+                    <input type="text" class="car-name" value="${data.name}" placeholder="${i}号車">
                     <div class="capacity-box">
                         <span>定員</span>
                         <input type="number" class="car-cap car-capacity-input" value="${data.cap}" min="1">
@@ -253,37 +465,47 @@
         }
 
         function handleShuffle() {
-            const members = Array.from(document.querySelectorAll('.name-in'))
+            const names = Array.from(document.querySelectorAll('.name-in'))
                 .map(i => i.value.trim()).filter(v => v !== "");
-            if(members.length < 2) { alert("2人以上入力してね！"); return; }
+            if(names.length < 2) { alert("2人以上入力してね！"); return; }
+
             const cars = Array.from(document.querySelectorAll('.car-setting-row')).map((r, idx) => ({
                 name: r.querySelector('.car-name').value.trim() || `${idx+1}号車`,
                 cap: parseInt(r.querySelector('.car-cap').value) || 1
             }));
-            const total = cars.reduce((s, c) => s + c.cap, 0);
-            if(total < members.length) { alert(`⚠️ 定員不足！あと${members.length - total}人分増やしてね🚗`); return; }
+
+            const totalCap = cars.reduce((s, c) => s + c.cap, 0);
+            if(totalCap < names.length) {
+                alert(`⚠️ お空の席が足りないよ！\nあと ${names.length - totalCap}人分増やしてね🚗`);
+                return;
+            }
 
             const btn = document.getElementById('shuffle-btn');
+            const originalText = btn.innerText;
             btn.innerText = "✨ シャッフル中... ✨";
+
             setTimeout(() => {
-                let shuffled = [...members].sort(() => Math.random() - 0.5);
+                let shuffled = [...names].sort(() => Math.random() - 0.5);
                 const results = cars.map(() => []);
                 let avail = cars.map((_, i) => i);
+
                 shuffled.forEach(m => {
                     const idx = avail[Math.floor(Math.random() * avail.length)];
                     results[idx].push(m);
                     if(results[idx].length >= cars[idx].cap) avail = avail.filter(v => v !== idx);
                 });
+
                 const container = document.getElementById('results-container');
                 container.innerHTML = '';
                 results.forEach((bin, i) => {
                     if(bin.length === 0) return;
                     const card = document.createElement('div');
                     card.className = 'result-card';
-                    card.innerHTML = `<h3>🚗 ${cars[i].name}</h3><div>${bin.map(m => `<span class="member-tag">${m}</span>`).join('')}</div>`;
+                    card.innerHTML = `<h3>🚗 ${cars[i].name}</h3><div class="result-tags">${bin.map(m => `<span class="member-tag">${m}</span>`).join('')}</div>`;
                     container.appendChild(card);
                 });
-                btn.innerText = "🎲 しゃっふる！";
+
+                btn.innerText = originalText;
                 container.scrollIntoView({ behavior: 'smooth' });
             }, 800);
         }
