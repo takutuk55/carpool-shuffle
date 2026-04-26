@@ -14,21 +14,20 @@
             --sky-light: #C2E9FB;
             --accent-pink: #FF8FAB;
             --accent-pink-hover: #FF7A9A;
-            --accent-orange: #FFB347;
+            --accent-blue: #7AA8DB;
             --card-bg: #FFFFFF;
             --text-main: #4A4A4A;
             --border-light: #FFE8E8;
-            --shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
-            --shadow-btn: 0 5px 0 #E07A92;
-            --radius-main: 28px;
-            --radius-input: 16px;
-            --radius-btn: 50px;
+            --shadow-soft: 0 10px 30px rgba(123, 184, 255, 0.15);
+            --radius-main: 32px; /* 少し角を丸めて柔らかく */
+            --radius-input: 20px;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            -webkit-tap-highlight-color: transparent; /* タップ時の青い枠を消す */
         }
 
         body {
@@ -36,44 +35,26 @@
             background: linear-gradient(180deg, var(--sky-blue) 0%, var(--sky-light) 100%);
             background-attachment: fixed;
             color: var(--text-main);
-            line-height: 1.6;
             min-height: 100vh;
-            padding: 20px 15px; /* スマホ用に左右余白を少し縮小 */
+            padding: 20px 15px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            overflow-x: hidden; /* 横スクロールを完全に禁止 */
+            overflow-x: hidden;
         }
 
         /* --- 雲の背景 --- */
         .cloud-bg {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            pointer-events: none;
-            overflow: hidden;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; pointer-events: none; overflow: hidden;
         }
-
         .cloud {
-            position: absolute;
-            background: white;
-            width: 180px;
-            height: 50px;
-            border-radius: 100px;
-            opacity: 0.7;
-            animation: moveClouds linear infinite;
+            position: absolute; background: white;
+            width: 180px; height: 50px; border-radius: 100px;
+            opacity: 0.6; animation: moveClouds linear infinite;
         }
-
-        .cloud::after, .cloud::before {
-            content: '';
-            position: absolute;
-            background: white;
-            border-radius: 50%;
-        }
-
+        .cloud::after, .cloud::before { content: ''; position: absolute; background: white; border-radius: 50%; }
         .cloud::after { width: 80px; height: 80px; top: -40px; left: 25px; }
         .cloud::before { width: 100px; height: 100px; top: -60px; left: 60px; }
 
@@ -86,297 +67,149 @@
         .container {
             max-width: 850px;
             width: 100%;
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border-radius: var(--radius-main);
             padding: 40px 25px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.06);
-            border: 1px solid rgba(255,255,255,0.7);
-            margin-top: 20px;
-            position: relative;
-            z-index: 10;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.05);
+            border: 1.5px solid rgba(255,255,255,1);
+            margin-top: 10px;
         }
 
-        header {
-            text-align: center;
-            margin-bottom: 35px;
-        }
-
+        header { text-align: center; margin-bottom: 40px; }
         h1 {
-            font-weight: 900;
-            font-size: 2.2rem;
-            color: var(--accent-pink);
-            letter-spacing: -0.5px;
-            margin-bottom: 8px;
+            font-weight: 900; font-size: 2.2rem; color: var(--accent-pink);
+            letter-spacing: -0.5px; margin-bottom: 12px;
             text-shadow: 2px 2px 0 rgba(255,255,255,0.8);
-            word-break: keep-all; /* モバイルでの不自然な改行を防止 */
         }
-
         .subtitle {
-            font-size: 0.95rem;
-            color: #7AA8DB;
-            font-weight: 900;
+            font-size: 0.95rem; color: var(--accent-blue);
+            background: white; display: inline-block;
+            padding: 4px 20px; border-radius: 50px; font-weight: 900;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
         }
 
         section {
             background: var(--card-bg);
-            border: 2px solid var(--border-light);
+            border: 1px solid rgba(255, 143, 171, 0.1);
             border-radius: var(--radius-main);
-            padding: 24px;
-            margin-bottom: 25px;
-            box-shadow: var(--shadow);
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow-soft);
+            transition: transform 0.3s;
         }
 
         h2 {
-            font-size: 1.2rem;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: #5D95D1;
+            font-size: 1.25rem; color: var(--accent-blue); margin-bottom: 25px;
+            display: flex; align-items: center; gap: 12px;
+        }
+        h2 .step-icon {
+            background: #EBF5FF; color: var(--accent-blue);
+            width: 36px; height: 36px; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-style: normal; font-size: 1.1rem;
         }
 
-        .member-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .member-item {
-            display: flex;
-            gap: 10px;
-        }
+        .member-list { display: flex; flex-direction: column; gap: 15px; }
+        .member-item { display: flex; gap: 12px; animation: slideIn 0.4s ease-out; }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } }
 
         input {
-            padding: 12px 18px;
-            border: 2.5px solid #F0F7FF;
-            border-radius: var(--radius-input);
-            font-size: 1rem;
-            outline: none;
-            transition: all 0.2s;
-            font-family: inherit;
-            color: var(--text-main);
-            width: 100%; /* 全てのインプットをデフォルトで幅いっぱいに */
+            padding: 15px 22px; border: 2.5px solid #F0F7FF;
+            border-radius: var(--radius-input); font-size: 1.05rem;
+            outline: none; transition: 0.25s; font-family: inherit; color: var(--text-main);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.01);
         }
-
-        input[type="text"] {
-            flex: 1;
-            background: #FAFDFF;
-        }
-
-        input:focus {
-            border-color: var(--sky-blue);
-            background: #FFF;
-            box-shadow: 0 0 0 4px rgba(161, 196, 253, 0.12);
-        }
+        input:focus { border-color: var(--accent-pink); background: #FFF; box-shadow: 0 0 0 5px rgba(255, 143, 171, 0.1); }
 
         .btn-remove {
-            background: #FFF;
-            border: 2px solid #EEE;
-            color: #DDD;
-            width: 48px;
-            min-width: 48px; /* スマホで潰れないように固定 */
-            height: 48px;
-            border-radius: var(--radius-input);
-            cursor: pointer;
-            font-size: 1.1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            background: #FFF; border: 2px solid #FEE; color: #FFB5C5;
+            width: 52px; min-width: 52px; height: 52px;
+            border-radius: 18px; cursor: pointer; font-size: 1.2rem;
+            display: flex; align-items: center; justify-content: center;
             transition: 0.2s;
         }
-
-        .btn-remove:hover {
-            background: #FFF0F0;
-            border-color: #FFDADA;
-            color: var(--accent-pink);
-        }
+        .btn-remove:active { transform: scale(0.9); background: #FFF5F7; }
 
         .btn-add {
-            margin-top: 15px;
-            background: white;
-            border: 3px dashed #A1C4FD;
-            color: #A1C4FD;
-            padding: 14px;
-            border-radius: var(--radius-input);
-            cursor: pointer;
-            width: 100%;
-            font-weight: 900;
-            transition: 0.2s;
+            margin-top: 20px; background: #FFF; border: 3px dashed #E0EFFF;
+            color: #A1C4FD; padding: 16px; border-radius: var(--radius-input);
+            cursor: pointer; width: 100%; font-weight: 900; transition: 0.2s;
         }
+        .btn-add:hover { border-color: var(--accent-pink); color: var(--accent-pink); background: #FFF9FA; }
 
         .car-count-ctrl {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 20px;
-            background: #F0F7FF;
-            padding: 15px 20px;
-            border-radius: 20px;
-            flex-wrap: wrap; /* スマホで入り切らない場合を考慮 */
-            gap: 10px;
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 25px; background: #F7FBFF; padding: 20px; border-radius: 24px;
         }
 
         .num-stepper {
-            display: flex;
-            align-items: center;
-            background: white;
-            border-radius: 12px;
-            border: 2px solid #E0EFFF;
+            display: flex; align-items: center; background: white;
+            border-radius: 15px; border: 2px solid #E0EFFF; overflow: hidden;
         }
-
         .num-stepper button {
-            background: none;
-            border: none;
-            padding: 8px 18px;
-            font-size: 1.3rem;
-            cursor: pointer;
-            color: #A1C4FD;
-            font-weight: 900;
+            background: none; border: none; padding: 12px 20px;
+            font-size: 1.4rem; cursor: pointer; color: #A1C4FD;
         }
-
-        .num-stepper input {
-            width: 50px;
-            border: none;
-            text-align: center;
-            font-size: 1.2rem;
-            font-weight: 900;
-            background: transparent;
-        }
-
-        .car-names-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
+        .num-stepper input { width: 50px; border: none; text-align: center; font-size: 1.3rem; font-weight: 900; padding: 0; }
 
         .car-setting-row {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            background: #FFF;
-            padding: 10px;
-            border-radius: 18px;
-            border: 2px solid #F0F7FF;
+            display: flex; gap: 12px; align-items: center;
+            background: #FFF; padding: 12px; border-radius: 22px;
+            border: 2px solid #F7FBFF; margin-bottom: 12px;
         }
-
         .capacity-box {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            background: #F0F7FF;
-            padding: 6px 10px;
-            border-radius: 12px;
-            font-weight: 700;
-            color: #5D95D1;
-            font-size: 0.85rem;
-            white-space: nowrap;
+            display: flex; align-items: center; gap: 8px;
+            background: #F0F7FF; padding: 8px 15px; border-radius: 15px;
+            font-weight: 700; color: #5D95D1; font-size: 0.9rem;
         }
+        .car-cap { width: 50px !important; padding: 6px !important; text-align: center; font-weight: 900; }
 
-        .car-capacity-input {
-            width: 50px !important;
-            padding: 6px !important;
-            text-align: center;
-            font-weight: 900;
-            border-width: 2px;
-        }
-
-        .action-area {
-            text-align: center;
-            margin: 40px 0;
-        }
-
+        .action-area { text-align: center; margin: 50px 0; }
         .btn-shuffle {
-            background: var(--accent-pink);
-            color: white;
-            border: none;
-            padding: 20px 60px;
-            font-size: 1.5rem;
-            font-weight: 900;
-            border-radius: var(--radius-btn);
-            cursor: pointer;
-            box-shadow: var(--shadow-btn);
-            transition: all 0.2s;
-            width: 100%; /* スマホなら幅いっぱいに */
-            max-width: 400px;
+            background: linear-gradient(135deg, var(--accent-pink), #FFB5C5);
+            color: white; border: none; padding: 22px 80px;
+            font-size: 1.7rem; font-weight: 900; border-radius: 60px;
+            cursor: pointer; box-shadow: 0 10px 0 #E07A92, 0 15px 30px rgba(255, 143, 171, 0.3);
+            transition: 0.2s; width: 100%; max-width: 420px;
         }
-
-        .btn-shuffle:active {
-            transform: translateY(2px);
-            box-shadow: none;
-        }
+        .btn-shuffle:active { transform: translateY(5px); box-shadow: 0 5px 0 #E07A92, 0 8px 15px rgba(255, 143, 171, 0.2); }
 
         #results-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
-            width: 100%;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px; width: 100%;
         }
-
         .result-card {
-            background: white;
-            border-radius: 24px;
-            padding: 22px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            border: 2px solid #F0F7FF;
-            animation: popIn 0.5s ease-out;
+            background: white; border-radius: 30px; padding: 30px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.06);
+            border: 2px solid #F7FBFF; position: relative;
+            animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
-
-        @keyframes popIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-
+        .result-card h3 { color: var(--accent-pink); margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
         .member-tag {
-            display: inline-block;
-            background: #F3F9FF;
-            color: #5D95D1;
-            padding: 7px 16px;
-            border-radius: 50px;
-            font-weight: 900;
-            margin: 4px;
-            border: 1.5px solid #E0EFFF;
-            font-size: 0.9rem;
-            word-break: break-all; /* 長い名前のはみ出し防止 */
+            display: inline-block; background: #FFFBFC; color: var(--accent-pink);
+            padding: 10px 20px; border-radius: 50px; font-weight: 900;
+            margin: 5px; border: 1.5px solid #FFE8EE; font-size: 1rem;
         }
 
-        .empty-state {
-            grid-column: 1 / -1;
-            text-align: center;
-            color: #ABC;
-            padding: 50px 20px;
-            font-weight: 900;
-            border: 3px dashed #CFE5FF;
-            border-radius: 25px;
-            font-size: 0.9rem;
-        }
-
-        /* --- モバイル専用の詳細調整 --- */
         @media (max-width: 600px) {
-            h1 { font-size: 1.6rem; }
-            .container { padding: 30px 18px; border-radius: 24px; }
-            section { padding: 18px; border-radius: 22px; }
-            h2 { font-size: 1.1rem; }
-            .car-setting-row {
-                flex-direction: column;
-                align-items: stretch;
-                padding: 12px;
-            }
-            .capacity-box {
-                align-self: flex-end; /* 定員入力は右寄せで収まりを良くする */
-            }
-            .btn-shuffle {
-                padding: 16px;
-                font-size: 1.3rem;
-            }
+            h1 { font-size: 1.7rem; }
+            .container { padding: 35px 20px; }
+            section { padding: 22px; border-radius: 28px; }
+            .car-setting-row { flex-direction: column; align-items: stretch; gap: 12px; }
+            .capacity-box { align-self: flex-end; }
+            .btn-shuffle { font-size: 1.4rem; padding: 18px; }
         }
     </style>
 </head>
 <body>
 
     <div class="cloud-bg">
-        <div class="cloud" style="top: 5%; left: 0%; animation-duration: 35s;"></div>
-        <div class="cloud" style="top: 25%; left: 0%; animation-duration: 45s; transform: scale(0.8); opacity: 0.8;"></div>
-        <div class="cloud" style="top: 45%; left: 0%; animation-duration: 30s; transform: scale(1.2); opacity: 0.6;"></div>
-        <div class="cloud" style="top: 70%; left: 0%; animation-duration: 50s; transform: scale(0.7); opacity: 0.9;"></div>
+        <div class="cloud" style="top: 5%; animation-duration: 40s;"></div>
+        <div class="cloud" style="top: 25%; animation-duration: 50s; transform: scale(1.3); opacity: 0.4;"></div>
+        <div class="cloud" style="top: 50%; animation-duration: 35s; transform: scale(0.8); opacity: 0.8;"></div>
+        <div class="cloud" style="top: 75%; animation-duration: 45s; transform: scale(1.1); opacity: 0.5;"></div>
     </div>
 
     <div class="container">
@@ -386,129 +219,99 @@
         </header>
 
         <section>
-            <h2>👤 STEP 1: メンバーを入力</h2>
-            <div id="member-inputs" class="member-list"></div>
-            <button class="btn-add" onclick="addMember()">+ 新しいメンバーを増やす</button>
+            <h2><i class="step-icon">👤</i>STEP 1: メンバーを入力</h2>
+            <div id="members" class="member-list"></div>
+            <button class="btn-add" onclick="addM()">+ なかまを増やす</button>
         </section>
 
         <section>
-            <h2>🛞 STEP 2: 車の台数・名前</h2>
+            <h2><i class="step-icon">🛞</i>STEP 2: 車の台数・名前</h2>
             <div class="car-count-ctrl">
-                <span>今の車の台数：</span>
+                <span>だす車の数：</span>
                 <div class="num-stepper">
-                    <button onclick="updateCars(-1)">-</button>
+                    <button onclick="updC(-1)">-</button>
                     <input type="number" id="car-count" value="2" readonly>
-                    <button onclick="updateCars(1)">+</button>
+                    <button onclick="updC(1)">+</button>
                 </div>
             </div>
-            <div id="car-names-container" class="car-names-grid"></div>
+            <div id="cars-config"></div>
         </section>
 
         <div class="action-area">
-            <button id="shuffle-btn" class="btn-shuffle" onclick="handleShuffle()">🎲 シャッフル！</button>
+            <button id="s-btn" class="btn-shuffle" onclick="doShuffle()">🎲 シャッフル！</button>
         </div>
 
-        <div id="results-container">
-            <div class="empty-state">まだ誰も乗っていないよ... 🎲</div>
-        </div>
+        <div id="res-box"></div>
     </div>
 
     <script>
-        let memberId = 0;
-        let carCount = 2;
-        const examples = ["田中さん", "佐藤さん", "鈴木さん", "高橋さん", "中村さん", "山本さん"];
+        let mIdx = 0, cCnt = 2;
+        const pool = ["田中さん", "佐藤さん", "鈴木さん", "高橋さん", "高橋さん", "伊藤さん", "中村さん"];
 
-        window.addEventListener('DOMContentLoaded', () => {
-            for(let i=0; i<4; i++) addMember();
-            renderCars();
-        });
-
-        function addMember() {
-            memberId++;
-            const ex = examples[Math.floor(Math.random() * examples.length)];
-            const div = document.createElement('div');
-            div.className = 'member-item';
-            div.innerHTML = `<input type="text" class="name-in" placeholder="例：${ex}" autocomplete="off"><button class="btn-remove" onclick="this.parentElement.remove()">✕</button>`;
-            document.getElementById('member-inputs').appendChild(div);
+        function addM() {
+            mIdx++;
+            const ex = pool[Math.floor(Math.random() * pool.length)];
+            const d = document.createElement('div');
+            d.className = 'member-item';
+            d.innerHTML = `<input type="text" class="name-in" placeholder="例：${ex}" autocomplete="off" style="flex:1"><button class="btn-remove" onclick="this.parentElement.remove()">✕</button>`;
+            document.getElementById('members').appendChild(d);
         }
 
-        function updateCars(v) {
-            const n = carCount + v;
-            if(n >= 1 && n <= 10) {
-                carCount = n;
-                document.getElementById('car-count').value = carCount;
-                renderCars();
-            }
+        function updC(v) {
+            cCnt = Math.max(1, Math.min(10, cCnt + v));
+            document.getElementById('car-count').value = cCnt;
+            renderC();
         }
 
-        function renderCars() {
-            const container = document.getElementById('car-names-container');
-            const current = Array.from(container.querySelectorAll('.car-setting-row'));
-            const saved = current.map(r => ({
-                name: r.querySelector('.car-name').value,
-                cap: r.querySelector('.car-cap').value
+        function renderC() {
+            const box = document.getElementById('cars-config');
+            const saved = Array.from(box.querySelectorAll('.car-setting-row')).map(r => ({
+                n: r.querySelector('.car-n').value, cap: r.querySelector('.car-cap').value
             }));
-            container.innerHTML = '';
-            for(let i=1; i<=carCount; i++) {
-                const data = saved[i-1] || { name: `${i}号車`, cap: 4 };
-                const div = document.createElement('div');
-                div.className = 'car-setting-row';
-                div.innerHTML = `
-                    <input type="text" class="car-name" value="${data.name}" placeholder="${i}号車">
-                    <div class="capacity-box">
-                        <span>定員</span>
-                        <input type="number" class="car-cap car-capacity-input" value="${data.cap}" min="1">
-                        <span>人</span>
-                    </div>`;
-                container.appendChild(div);
+            box.innerHTML = '';
+            for(let i=1; i<=cCnt; i++) {
+                const d = saved[i-1] || { n: `${i}号車`, cap: 4 };
+                const r = document.createElement('div');
+                r.className = 'car-setting-row';
+                r.innerHTML = `<input type="text" class="car-n" value="${d.n}" style="flex:1"><div class="capacity-box"><span>定員</span><input type="number" class="car-cap" value="${d.cap}" min="1"><span>人</span></div>`;
+                box.appendChild(r);
             }
         }
 
-        function handleShuffle() {
-            const names = Array.from(document.querySelectorAll('.name-in'))
-                .map(i => i.value.trim()).filter(v => v !== "");
-            if(names.length < 2) { alert("2人以上入力してね！"); return; }
+        function doShuffle() {
+            const names = Array.from(document.querySelectorAll('.name-in')).map(i => i.value.trim()).filter(v => v !== "");
+            if(names.length < 2) { alert("2人以上いれてね！✨"); return; }
+            const cars = Array.from(document.querySelectorAll('.car-setting-row')).map((r, i) => ({ n: r.querySelector('.car-n').value.trim() || `${i+1}号車`, cap: parseInt(r.querySelector('.car-cap').value) || 1 }));
+            if(cars.reduce((s, c) => s + c.cap, 0) < names.length) { alert("⚠️ お席がたりないよ！増やしてね🚗"); return; }
 
-            const cars = Array.from(document.querySelectorAll('.car-setting-row')).map((r, idx) => ({
-                name: r.querySelector('.car-name').value.trim() || `${idx+1}号車`,
-                cap: parseInt(r.querySelector('.car-cap').value) || 1
-            }));
-
-            const totalCap = cars.reduce((s, c) => s + c.cap, 0);
-            if(totalCap < names.length) {
-                alert(`⚠️ お空の席が足りないよ！\nあと ${names.length - totalCap}人分増やしてね🚗`);
-                return;
-            }
-
-            const btn = document.getElementById('shuffle-btn');
-            const originalText = btn.innerText;
+            const btn = document.getElementById('s-btn');
             btn.innerText = "✨ シャッフル中... ✨";
-
             setTimeout(() => {
-                let shuffled = [...names].sort(() => Math.random() - 0.5);
-                const results = cars.map(() => []);
-                let avail = cars.map((_, i) => i);
-
-                shuffled.forEach(m => {
-                    const idx = avail[Math.floor(Math.random() * avail.length)];
-                    results[idx].push(m);
-                    if(results[idx].length >= cars[idx].cap) avail = avail.filter(v => v !== idx);
+                let shuf = [...names].sort(() => Math.random() - 0.5);
+                const bins = cars.map(() => []);
+                let av = cars.map((_, i) => i);
+                shuf.forEach(m => {
+                    const idx = av[Math.floor(Math.random() * av.length)];
+                    bins[idx].push(m);
+                    if(bins[idx].length >= cars[idx].cap) av = av.filter(idx2 => idx2 !== idx);
                 });
-
-                const container = document.getElementById('results-container');
-                container.innerHTML = '';
-                results.forEach((bin, i) => {
+                const res = document.getElementById('res-box');
+                res.innerHTML = '<div id="results-container"></div>';
+                const container = res.querySelector('#results-container');
+                bins.forEach((bin, i) => {
                     if(bin.length === 0) return;
                     const card = document.createElement('div');
                     card.className = 'result-card';
-                    card.innerHTML = `<h3>🚗 ${cars[i].name}</h3><div class="result-tags">${bin.map(m => `<span class="member-tag">${m}</span>`).join('')}</div>`;
+                    card.innerHTML = `<h3>🚗 ${cars[i].n}</h3><div>${bin.map(m => `<span class="member-tag">${m}</span>`).join('')}</div>`;
                     container.appendChild(card);
                 });
-
-                btn.innerText = originalText;
+                btn.innerText = "🎲 もう一度！";
                 container.scrollIntoView({ behavior: 'smooth' });
             }, 800);
         }
+
+        for(let i=0; i<4; i++) addM();
+        renderC();
     </script>
 </body>
 </html>
